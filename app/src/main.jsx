@@ -1,55 +1,59 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { useEffect, useRef, useState } from 'react'
+import env from './env';
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { Carousel } from 'flowbite-react';
 import { BrowserRouter, Routes, Route, Navigate, Link, useParams, redirect, useNavigate } from 'react-router-dom';
 document.querySelector('#root').classList = 'flex flex-col items-center gap-12';
 document.querySelector('html').classList = 'scroll-smooth';
-const page = location.pathname;
+let page = location.pathname.replace(env.ROOT_DIR, '');
+page = (page === "") ? "/" : page;
 
 const patternKeys = ['cover', 'logo', 'textLine1', 'textLine2', 'color', 'textLine3', 'textBtn'];
 const patterns = (key, page_ = null) => ({
-    '/' : [
-        "", 'ccg.jpg', '« Document as a Service »', 'Votre interlocuteur privilégié au service du document !', '#0061ad', null, 'Demandez une expertise'
+    ['/'] : [
+        "", '/ccg.jpg', '« Document as a Service »', 'Votre interlocuteur privilégié au service du document !', '#0061ad', null, 'Demandez une expertise'
     ],
-    '/solutions' : [
-        '-sol', 'sol1.png', 'Venez en profiter !', 'Audit gratuit, Bureautique, Informatique', '#09a13b', "Fort de notre capacité à sélectionner les meilleurs acteurs du marché pour vous accompagner dans l'ensemble de vos projets, COPYCAT SOLUTIONS vous offre un panel de services sur-mesure avec possibilité de maintenance et support", 'Demandez une expertise'
+    ['/solutions'] : [
+        '-sol', '/sol1.png', 'Venez en profiter !', 'Audit gratuit, Bureautique, Informatique', '#09a13b', "Fort de notre capacité à sélectionner les meilleurs acteurs du marché pour vous accompagner dans l'ensemble de vos projets, COPYCAT SOLUTIONS vous offre un panel de services sur-mesure avec possibilité de maintenance et support", 'Demandez une expertise'
     ],
-    '/shop' : [
-        '-shop', 'ccs3.jpg', `Achetez vos fournitures, appareils informatiques, multimédia et bien plus !`, null, '#f39115', "COPYCAT SHOP regroupe des fournitures en tout genre à des prix imbattables", 'Commandez en ligne'
+    ['/shop'] : [
+        '-shop', '/ccs3.jpg', `Achetez vos fournitures, appareils informatiques, multimédia et bien plus !`, null, '#f39115', "COPYCAT SHOP regroupe des fournitures en tout genre à des prix imbattables", 'Commandez en ligne'
     ],
-    '/print' : [
-        '-print', 'pr1.png', `10% sur notre site CopycatPrint.fr avec le code promo COPYCAT10`, null, '#ed00b5', "COPYCAT PRINT est capable de vous accompagner sur l'ensemble de vos projets sur-mesure. De la carte de visite à la vitrophanie, jusqu'aux objets personnalisés", 'Imprimez vos documents'
+    ['/print'] : [
+        '-print', '/pr1.png', `10% sur notre site CopycatPrint.fr avec le code promo COPYCAT10`, null, '#ed00b5', "COPYCAT PRINT est capable de vous accompagner sur l'ensemble de vos projets sur-mesure. De la carte de visite à la vitrophanie, jusqu'aux objets personnalisés", 'Imprimez vos documents'
     ],
-    '/labs' : [
-        '-labs', 'lab1.png', `Réaliser un audit gratuit pour vos projets`, null, '#6e2380', "COPYCAT LABS est un adepte des technologies de programmons et de la compréhension globale du système informatique dans lequel nous évoluons, ainsi que la compétence des outils graphique pour vous accompagner au mieux dans vos projets de création", 'Contactez nous'
+    ['/labs'] : [
+        '-labs', '/lab1.png', `Réaliser un audit gratuit pour vos projets`, null, '#6e2380', "COPYCAT LABS est un adepte des technologies de programmons et de la compréhension globale du système informatique dans lequel nous évoluons, ainsi que la compétence des outils graphique pour vous accompagner au mieux dans vos projets de création", 'Contactez nous'
     ],
-    '/about' : [
-        "", 'ccg.jpg', '« Document as a Service »', 'Votre interlocuteur privilégié au service du document !', '#0061ad', null, 'Demandez une expertise'
+    ['/about'] : [
+        "", '/ccg.jpg', '« Document as a Service »', 'Votre interlocuteur privilégié au service du document !', '#0061ad', null, 'Demandez une expertise'
     ],
-    '/sevres' : [
-        "", 'ccg.jpg', '« Document as a Service »', 'Votre interlocuteur privilégié au service du document !', '#0061ad', null, 'Demandez une expertise'
+    ['/sevres'] : [
+        "", '/ccg.jpg', '« Document as a Service »', 'Votre interlocuteur privilégié au service du document !', '#0061ad', null, 'Demandez une expertise'
     ]
 })?.[page_ ?? page]?.[patternKeys.indexOf((key))];
+
 
 const App = {
     Components : {},
     Pages : {},
     Layout : {},
     Page : ({}) => {
+        console.log(page);
         return (<>
             <style>{`body{background:rgba(0,0,0,0.025);--thickness: 3px} .colorPage{background-color: var(--page-color);}`}</style>
             {false && <div className='opacity-50 bg-black md:bg-red-500 lg:bg-blue-500 xl:bg-teal-500 fixed w-screen h-screen z-50'></div>}
             <Routes>
-                <Route path="/" element={<App.Pages.Home color={"#0061ad"} />} />
-                <Route path="/solutions" element={<App.Pages.Solutions color={"#09a13b"} />} />
-                <Route path="/shop" element={<App.Pages.Shop color={'#f39115'} />} />
-                <Route path="/print" element={<App.Pages.Print color={'#ed00b5'} />} />
-                <Route path="/labs" element={<App.Pages.Labs color={'#6e2380'} />} />
-                <Route path="/about" element={<App.Pages.About color={'#0061ad'} alt={true} />} />
-                <Route path="/sevres" element={<App.Pages.About color={'#0061ad'} alt={true} />} />
-                <Route path="*" element={<Navigate to={"/"} />} />
+                <Route path={env.ROOT_DIR+"/"} element={<App.Pages.Home color={"#0061ad"} />} />
+                <Route path={env.ROOT_DIR+"/solutions"} element={<App.Pages.Solutions color={"#09a13b"} />} />
+                <Route path={env.ROOT_DIR+"/shop"} element={<App.Pages.Shop color={'#f39115'} />} />
+                <Route path={env.ROOT_DIR+"/print"} element={<App.Pages.Print color={'#ed00b5'} />} />
+                <Route path={env.ROOT_DIR+"/labs"} element={<App.Pages.Labs color={'#6e2380'} />} />
+                <Route path={env.ROOT_DIR+"/about"} element={<App.Pages.About color={'#0061ad'} alt={true} />} />
+                <Route path={env.ROOT_DIR+"/sevres"} element={<App.Pages.About color={'#0061ad'} alt={true} />} />
+                <Route path={"*"} element={<Navigate to={env.ROOT_DIR+"/"} />} />
             </Routes>
         </>)
     },
@@ -91,7 +95,7 @@ App.Layout.Body = ({children, alt = false}) => {
 App.Layout.Header = ({}) => {
     return <>
         <div id='header' className={`w-full h-screen relative flex snap-always snap-center bg-[${patterns('color')}]`}>
-            <img src={"banner-bg"+patterns('cover')+".png"} className='w-full h-full object-cover'/>
+            <img src={"/banner-bg"+patterns('cover')+".png"} className='w-full h-full object-cover'/>
             <div className="absolute w-full h-full flex flex-col [&>*]:h-full gap-4 p-8 lg:p-4">
                 <App.Components.Nav />
                 <div className='w-full flex justify-center header_Plate'>
@@ -182,7 +186,7 @@ App.Pages.Home = ({color}) => <App.Layout.Body>
         <div className='grid max-lg:grid-rows-4 lg:grid-cols-4 h-fit w-full gap-6'>
             <div className='flex flex-col gap-4 items-center snap-always snap-center toFade'>
                 <div className="flex flex-col gap-2">
-                    <img src="Solutions.svg" className="h-[200px] aspect-square w-fit" />
+                    <img src="/Solutions.svg" className="h-[200px] aspect-square w-fit" />
                     <span>COPYCAT SOLUTIONS</span>
                 </div>
                 <p className='text-gray-400'>
@@ -192,7 +196,7 @@ App.Pages.Home = ({color}) => <App.Layout.Body>
             </div>
             <div className='flex flex-col gap-4 items-center snap-always snap-center toFade'>
                 <div className="flex flex-col gap-2">
-                    <img src="Shop.svg" className="h-[200px] aspect-square w-fit" />
+                    <img src="/Shop.svg" className="h-[200px] aspect-square w-fit" />
                     <span>COPYCAT SOLUTIONS</span>
                 </div>
                 <p className='text-gray-400'>
@@ -202,7 +206,7 @@ App.Pages.Home = ({color}) => <App.Layout.Body>
             </div>
             <div className='flex flex-col gap-4 items-center snap-always snap-center toFade'>
                 <div className="flex flex-col gap-2">
-                    <img src="Print.svg" className="h-[200px] aspect-square w-fit" />
+                    <img src="/Print.svg" className="h-[200px] aspect-square w-fit" />
                     <span>COPYCAT SOLUTIONS</span>
                 </div>
                 <p className='text-gray-400'>
@@ -212,7 +216,7 @@ App.Pages.Home = ({color}) => <App.Layout.Body>
             </div>
             <div className='flex flex-col gap-4 items-center snap-always snap-center toFade'>
                 <div className="flex flex-col gap-2">
-                    <img src="Labs.svg" className="h-[200px] aspect-square w-fit" />
+                    <img src="/Labs.svg" className="h-[200px] aspect-square w-fit" />
                     <span>COPYCAT SOLUTIONS</span>
                 </div>
                 <p className='text-gray-400'>
@@ -225,7 +229,7 @@ App.Pages.Home = ({color}) => <App.Layout.Body>
     <div className="bg-[#efefef] flex items-center max-sm:h-screen w-full justify-center snap-always snap-center toFade">
         <div className='max-w-[1340px] flex flex-col lg:flex-row w-full [&>div]:w-full px-5 py-10 gap-8'>
             <div className='flex justify-center'>
-                <img src="pdg.svg" className="w-[65%]" />
+                <img src="/pdg.svg" className="w-[65%]" />
             </div>
             <div className='flex flex-col justify-center items-center gap-4 text-xl text-gray-400 text-center'>
                 <h1 className='text-4xl text-black'>Erwan HECAEN</h1>
@@ -437,11 +441,11 @@ App.Components.Nav = ({}) => {
 
     return <div className='flex flex-col justify-start items-center' id="nav">
         <div className='flex justify-between lg:justify-between lg:gap-8 relative max-w-[1340px] w-full'>
-            <Link to="/" className='contents'><img src={"logo.png"} className="w-[20vh] max-h-[120px] aspect-[163/120] object-contain h-fit left-0 lg:mx-18" /></Link>
+            <Link to={env.ROOT_DIR+"/"} className='contents'><img src={"/logo.png"} className="w-[20vh] max-h-[120px] aspect-[163/120] object-contain h-fit left-0 lg:mx-18" /></Link>
             <ul id='navpills' className='text-2xl lg:text-xl xl:text-2xl hidden lg:flex gap-[.5vw] md:[&_li]:cursor-pointer [&>a]:text-[#0061ad] items-start [&_li]:p-2 z-50' style={{textWrap: "nowrap"}}>
                 {links.map((li, i) => 
                     <li className={`[&:not(:hover)]:!text-[#0061ad] lg:[&:hover_.dropdown]:block lg:[&:hover_.dropdown]:animate-[fade-in_0.2s_ease-in-out_forwards]`} key={i} style={{color: patterns('color', li.path)}}>
-                        <Link className='hover:bg-white/5' to={li.path} reloadDocument>{li.text}</Link>
+                        <Link className='hover:bg-white/5' to={env.ROOT_DIR+li.path} reloadDocument>{li.text}</Link>
                         <div className='dropdown [li>&]:hidden hover:block absolute py-4'>
                             <div className={`bg-white rounded-md z-50 drop-shadow-md`} style={{color: patterns('color', li.path)}}>
                                 {li.dropdown.map((dropdownLi, i) => <Link onClick={() => {
@@ -449,7 +453,7 @@ App.Components.Nav = ({}) => {
                                         document.querySelector('#navpills').classList.remove('mobile');
                                         document.querySelector('#navpills_decl').classList.remove('close');
                                     }
-                                }} to={dropdownLi.path} key={i} reloadDocument className='block p-4 hover:bg-black/5 [.dropdown>div>a:first-child>&]:rounded-t-lg [.dropdown>div>a:last-child>&]:rounded-b-lg'>
+                                }} to={env.ROOT_DIR+dropdownLi.path} key={i} reloadDocument className='block p-4 hover:bg-black/5 [.dropdown>div>a:first-child>&]:rounded-t-lg [.dropdown>div>a:last-child>&]:rounded-b-lg'>
                                     <div className="grid grid-cols-1 grid-rows-[min-content] p-1">
                                         <div>{dropdownLi.title}</div>
                                         <div className='text-base'>{dropdownLi.text}</div>
