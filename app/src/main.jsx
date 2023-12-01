@@ -1,10 +1,11 @@
+/* eslint-disable react/display-name */
 /* eslint-disable react-refresh/only-export-components */
 import React, { useEffect, useRef, useState } from 'react'
 import env from './env';
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { Carousel } from 'flowbite-react';
-import { BrowserRouter, Routes, Route, Navigate, Link, useParams, redirect, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Link, useParams, redirect, useNavigate, useLocation } from 'react-router-dom';
 document.querySelector('#root').classList = 'flex flex-col items-center gap-12';
 document.querySelector('html').classList = 'scroll-smooth';
 let page = location.pathname.replace(env.ROOT_DIR, '');
@@ -40,8 +41,7 @@ const App = {
     Components : {},
     Pages : {},
     Layout : {},
-    Page : ({}) => {
-        console.log(page);
+    Page : ({}) => {   
         return (<>
             <style>{`body{background:rgba(0,0,0,0.025);--thickness: 3px} .colorPage{background-color: var(--page-color);}`}</style>
             {false && <div className='opacity-50 bg-black md:bg-red-500 lg:bg-blue-500 xl:bg-teal-500 fixed w-screen h-screen z-50'></div>}
@@ -93,22 +93,24 @@ App.Layout.Body = ({children, alt = false}) => {
 }
 
 App.Layout.Header = ({}) => {
+    let path = useLocation();
+    path = path.pathname.replace(env.ROOT_DIR, '');
     return <>
-        <div id='header' className={`w-full h-screen relative flex snap-always snap-center bg-[${patterns('color')}]`}>
-            <img src={"/banner-bg"+patterns('cover')+".png"} className='w-full h-full object-cover'/>
+        <div id='header' className={`w-full h-screen relative flex snap-always snap-center bg-[${patterns('color', path)}]`}>
+            <img src={"/banner-bg"+patterns('cover', path)+".png"} className='w-full h-full object-cover'/>
             <div className="absolute w-full h-full flex flex-col [&>*]:h-full gap-4 p-8 lg:p-4">
                 <App.Components.Nav />
                 <div className='w-full flex justify-center header_Plate'>
-                    <img src={patterns('logo')} className={'w-[35vh] lg:w-[350px] aspect-square h-fit rounded-full md:mt-16 object-contain'}/>
+                    <img src={patterns('logo', path)} className={'w-[35vh] lg:w-[350px] aspect-square h-fit rounded-full md:mt-16 object-contain'}/>
                 </div>
                 <div className='w-full text-white text-center flex flex-col justify-center text-base md:text-2xl lg:text-3xl gap-[1.5vh] lg:gap-[18px] items-center header_Plate'>
-                    <h2 className='max-w-[500px]'>{patterns('textLine1')}</h2>
-                    <h2 className=''>{patterns('textLine2')}</h2>
-                    <button className={`md:text-2xl bg-white px-4 py-2 md:px-7 md:py-3.5 rounded-full`}style={{color: `${patterns('color')}`}}>{patterns('textBtn')}</button>
+                    <h2 className='max-w-[500px]'>{patterns('textLine1', path)}</h2>
+                    <h2 className=''>{patterns('textLine2', path)}</h2>
+                    <button className={`md:text-2xl bg-white px-4 py-2 md:px-7 md:py-3.5 rounded-full`}style={{color: `${patterns('color', path)}`}}>{patterns('textBtn', path)}</button>
                 </div>
             </div>
         </div>
-        {patterns('textLine3') && <div className={`-mt-12 text-white w-full flex justify-center p-16 pt-8 text-xl md:text-3xl lg:text-4xl text-center snap-end`} style={{background: `${patterns('color')}`}}>
+        {patterns('textLine3', path) && <div className={`-mt-12 text-white w-full flex justify-center p-16 pt-8 text-xl md:text-3xl lg:text-4xl text-center snap-end`} style={{background: `${patterns('color', path)}`}}>
             {`${patterns('textLine3')}`}
         </div>}
     </>

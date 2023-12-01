@@ -1,3 +1,3 @@
 export default ({
-	ROOT_DIR: ""
+	ROOT_DIR: "/ccg-project"
 })
