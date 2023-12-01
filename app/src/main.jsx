@@ -451,7 +451,7 @@ App.Components.Nav = ({}) => {
                         <div className='dropdown [li>&]:hidden hover:block absolute py-4'>
                             <div className={`bg-white rounded-md z-50 drop-shadow-md`} style={{color: patterns('color', li.path)}}>
                                 {li.dropdown.map((dropdownLi, i) => <Link onClick={() => {
-                                    if(dropdownLi.path !== location.pathname) { navigate(dropdownLi.path); } else {
+                                    if(env.ROOT_DIR+dropdownLi.path !== location.pathname) { navigate(env.ROOT_DIR+dropdownLi.path); } else {
                                         document.querySelector('#navpills').classList.remove('mobile');
                                         document.querySelector('#navpills_decl').classList.remove('close');
                                     }
