@@ -292,10 +292,10 @@ App.Pages.Solutions = ({color}) => {
             <style>{`body{--page-color: ${color};}`}</style>
             <App.Components.Timeline color={color} list={[
                 //{image: "", texte: "", button: "",},
-                {image: "https://copycatgroup.fr/images/bur1.png", id: "ee", text: <>{`Vente et location d'imprimante`}<br />{`Petit et grand format, laser ou jet d'encre...`}</>, button: "Je suis intéressé",},
-                {image: "https://copycatgroup.fr/images/tel1.png", text: <>{`Téléphones fixes, mobiles, internet...`}</>, button: "Je suis intéressé",},
-                {image: "https://copycatgroup.fr/images/dig1.png", text: <>{`Archivage, dématérialisation des factures, note de frais...`}</>, button: "Je suis intéressé",},
-                {image: "https://copycatgroup.fr/images/inf1.png", text: <>{`Vente, maintenance, infogérance`}</>, button: "Je suis intéressé",},
+                {image: "https://copycatgroup.fr/images/bur1.png", id: "bur", text: <>{`Vente et location d'imprimante`}<br />{`Petit et grand format, laser ou jet d'encre...`}</>, button: "Je suis intéressé",},
+                {image: "https://copycatgroup.fr/images/tel1.png", id: "tel", text: <>{`Téléphones fixes, mobiles, internet...`}</>, button: "Je suis intéressé",},
+                {image: "https://copycatgroup.fr/images/dig1.png", id: "dig", text: <>{`Archivage, dématérialisation des factures, note de frais...`}</>, button: "Je suis intéressé",},
+                {image: "https://copycatgroup.fr/images/inf1.png", id: "inf", text: <>{`Vente, maintenance, infogérance`}</>, button: "Je suis intéressé",},
             ]} />
         </App.Layout.Body>
     )
@@ -377,6 +377,8 @@ App.Components.Carousel = ({images, className}) => <Carousel className={classNam
 
 App.Components.Timeline = ({color, list}) => {
     const timeline = useRef(null);
+    const location = useLocation();
+
     useEffect(() => {
         const hr = function () {
             //[...timeline.current.querySelectorAll('.container.right')].map((item) => { item.style.top = "-" + (0.75 * item.getBoundingClientRect().height) + "px"; });
@@ -386,14 +388,24 @@ App.Components.Timeline = ({color, list}) => {
             timeline.current?.style.setProperty("--x", (whole.bottom-last.bottom) + "px", "");
         }
         hr();
+        document.onreadystatechange = function(e) { if (document.readyState === 'complete') { hr(); window.scroll(0,0); } };
         window.addEventListener('load', hr);
         window.addEventListener('scroll', hr);
         window.addEventListener('resize', hr);
+        if (location.hash) {
+            window.scroll(
+                0,
+                document
+                .querySelector(location.hash)
+                .getBoundingClientRect()
+                .top
+            )
+        }
     }, [])
     
     return <div ref={timeline} className={`timeline !-mt-12 pt-12 w-full max-w-[1340px] [&_img]:drop-shadow-xl text-center`}>
         {list.map((element, i) => <div id={element.id} className={"max-sm:!top-0 container "+(i % 2 === 0 ? "left" : "right")} key={i}>
-            <div className="content grid grid-cols-1 grid-rows-[min-content] gap-8 text-2xl snap-center">
+            <div className="content grid grid-cols-1 grid-rows-[min-content] gap-8 text-2xl snap-start">
                 <div className='relative grid'>
                     <div className={`hr absolute w-full`}>
                         <div className='inner'>
@@ -413,10 +425,10 @@ App.Components.Nav = ({}) => {
     const navigate = useNavigate();
     const links = [
         {path: "/solutions", text: "Copycat Solutions", dropdown: [
-            {path: "/solutions#ee", title: "Bureautique", text: "Analyse Financière, Vente et location, Rachat de contrat..."},
-            {path: "/solutions", title: "Téléphonie", text: "Téléphone Fixes, Mobiles, Internet..."},
-            {path: "/solutions", title: "Digital", text: "Archivage, Dématérialisation de factures, Note de frais..."},
-            {path: "/solutions", title: "Informatique", text: "Vente maintenance, Infogérance..."},
+            {path: "/solutions#bur", title: "Bureautique", text: "Analyse Financière, Vente et location, Rachat de contrat..."},
+            {path: "/solutions#tel", title: "Téléphonie", text: "Téléphone Fixes, Mobiles, Internet..."},
+            {path: "/solutions#dig", title: "Digital", text: "Archivage, Dématérialisation de factures, Note de frais..."},
+            {path: "/solutions#inf", title: "Informatique", text: "Vente maintenance, Infogérance..."},
         ]},
         {path: "/shop", text: "Copycat Shop", dropdown: [
             {path: "/shop", title: "Informatique", text: "Ordinateur, Clé USB, Souris, Clavier, Câble HDMI..."},
